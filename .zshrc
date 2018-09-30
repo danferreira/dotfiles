@@ -27,7 +27,7 @@ plugins=(
 )
 
 # Spaceship theme settings
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 
 # Sources
 source $ZSH/oh-my-zsh.sh
