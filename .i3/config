@@ -4,7 +4,7 @@ floating_modifier $mod
 
 font xft:URWGothic-Book 11
 
-default_border pixel 1
+default_border pixel 3
 
 # Start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
