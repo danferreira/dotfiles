@@ -26,14 +26,12 @@ secondary = #e60053
 alert = #f90000
 
 [bar/default]
-;monitor = ${env:MONITOR:HDMI-1}
 width = 100%
 height = 30
-bottom = true
 ;offset-x = 1%
 ;offset-y = 1%
 radius = 6.0
-fixed-center = false
+fixed-center = true
 
 background = ${colors.background}
 foreground = ${colors.foreground}
@@ -200,6 +198,21 @@ format = <label>
 format-warn-prefix = " "
 format-warn-prefix-foreground = ${colors.alert}
 label-warn-foreground = ${colors.alert}
+
+[module/network]
+type = internal/network
+interface = wlp2s0
+; Seconds to sleep between updates
+; Default: 1
+interval = 3.0
+
+; Test connectivity every Nth update
+; A value of 0 disables the feature
+; NOTE: Experimental (needs more testing)
+; Default: 0
+;ping-interval = 3
+
+label-connected =  %downspeed:3%  %upspeed:3%
 
 [settings]
 screenchange-reload = true
