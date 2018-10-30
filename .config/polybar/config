@@ -17,27 +17,21 @@
 ;==========================================================
 
 [colors]
-background = #222
-background-alt = #333
-foreground = #ffffff
-foreground-alt = #f1f442
-primary = #0f6382
-secondary = #e60053
+background = ${xrdb:color0:#222}
+background-alt = ${xrdb:color0:#333}
+foreground = #fff
+primary = ${xrdb:color7:#fff}
 alert = #f90000
 
 [bar/default]
 width = 100%
 height = 30
-;offset-x = 1%
-;offset-y = 1%
-radius = 6.0
 fixed-center = true
 
 background = ${colors.background}
 foreground = ${colors.foreground}
 
-line-size = 3
-line-color = #f00
+line-size = 4
 
 border-size = 2
 border-color = #00000000
@@ -58,15 +52,6 @@ modules-right = cpu temperature battery date
 
 tray-position = right
 tray-padding = 2
-;tray-transparent = true
-;tray-background = #0063ff
-
-;wm-restack = i3
-
-;override-redirect = true
-
-;scroll-up = i3wm-wsnext
-;scroll-down = i3wm-wsprev
 
 cursor-click = pointer
 cursor-scroll = ns-resize
