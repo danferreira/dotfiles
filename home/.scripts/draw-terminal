@@ -1,0 +1,15 @@
+#!/bin/bash
+
+slop=$(slop -f "%x %y %w %h" -b 1 -t 0 -q) || exit 1
+read -r X Y W H < <(echo $slop)
+
+if [ "$W" -gt "1" ]; then
+	# Width and Height in px need to be converted to columns/rows
+	# To get these magic values, make a fullscreen terminal, and divide your screen width by ${tput cols}, height by ${tput lines} 
+	(( W /= 11 ))
+	(( H /= 27 ))
+	g=${W}x${H}+${X}+${Y}
+
+	$TERMINAL --geometry=$g --title=floating
+fi
+
