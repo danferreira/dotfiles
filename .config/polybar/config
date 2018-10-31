@@ -24,6 +24,7 @@ primary = ${xrdb:color7:#fff}
 alert = #f90000
 
 [bar/default]
+monitor = ${env:MONITOR:}
 width = 100%
 height = 30
 fixed-center = true
