@@ -9,6 +9,9 @@ default_border pixel 3
 # Start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 
+# Draw a terminal
+bindsym $mod+z exec --no-startup-id draw-terminal
+
 # Kill an window
 bindsym $mod+Ctrl+x --release exec --no-startup-id xkill
 
@@ -19,9 +22,6 @@ bindsym $mod+F4 kill
 # Start program launcher
 # bindsym $mod+d exec --no-startup-id dmenu_recency
 bindsym $mod+d exec --no-startup-id rofi -show drun
-
-# Launch categorized menu
-# bindsym $mod+z exec --no-startup-id morc_menu
 
 # Shortcut Applications
 bindsym $mod+F1 exec $BROWSER
@@ -179,6 +179,7 @@ for_window [title="File Transfer*"] floating enable
 for_window [class="Lightdm-settings"] floating enable
 for_window [class="Lxappearance"] floating enable sticky enable border normal
 for_window [class="(?i)virtualbox"] floating enable border normal
+for_window [class="terminal" title="floating"] floating enable
 
 # Switch to workspace with urgent window automatically
 for_window [urgent=latest] focus
