@@ -81,9 +81,6 @@ workspace_auto_back_and_forth yes
 bindsym $mod+Shift+b move container to workspace back_and_forth; workspace back_and_forth
 
 # Workspace names
-# to display names or symbols instead of plain workspace numbers you can use
-# something like: set $ws1 1:mail
-#                 set $ws2 2:
 set $ws1 "1:web"
 set $ws2 "2:code"
 set $ws3 "3:media"
@@ -94,7 +91,7 @@ set $ws7 "7"
 set $ws8 "8"
 
 assign [class="Google-chrome"] $ws1
-assign [class="Code - OSS"] $ws2
+assign [class="code"] $ws2
 assign [class="vlc"] $ws3
 
 # Switch to workspace
@@ -181,7 +178,6 @@ bindsym $mod+9 exec --no-startup-id blurlock
 for_window [title="File Transfer*"] floating enable
 for_window [class="Lightdm-settings"] floating enable
 for_window [class="Lxappearance"] floating enable sticky enable border normal
-for_window [class="Nitrogen"] floating enable sticky enable border normal
 for_window [class="(?i)virtualbox"] floating enable border normal
 
 # Switch to workspace with urgent window automatically
@@ -222,13 +218,14 @@ smart_gaps on
 smart_borders on
 
 # Autostart applications
+exec --no-startup-id xrandr --output HDMI1 --auto --right-of eDP1
 exec --no-startup-id pulseaudio
 exec --no-startup-id pa-applet
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec --no-startup-id nitrogen --restore; sleep 1; compton -b
 exec --no-startup-id nm-applet
 exec --no-startup-id xfce4-power-manager
+exec --no-startup-id compton -b
 exec --no-startup-id srandrd display_handler
+exec_always --no-startup-id wal -R
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id fix_xcursor
