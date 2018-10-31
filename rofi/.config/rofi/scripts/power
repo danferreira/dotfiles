@@ -1,0 +1,25 @@
+#!/bin/bash
+
+function confirm() {
+	confirm=$(echo -e "yes\nno" | rofi -dmenu -p "Confirm?" -bw 0 -lines 2 -separator-style none -location 0 -width 10 -hide-scrollbar -padding 5)
+	[[ "$confirm" = "yes" ]] 
+	return	
+}
+
+res=$(echo -e "reboot\nshutdown\nsuspend\nexit" | rofi -dmenu -p "Power Options" -bw 0 -lines 4 -width 10 -padding 5)
+
+if [ ! -z $res ]; then
+	case $res in
+		reboot)
+			confirm && systemctl reboot
+		;;
+		shutdown)
+			confirm && systemctl poweroff
+		;;
+		suspend)
+			confirm && systemctl suspend
+		;;
+		exit)
+			confirm && i3msg exit
+	esac
+fi
