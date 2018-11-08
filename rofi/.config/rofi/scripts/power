@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
-function confirm() {
+confirm() {
 	confirm=$(echo -e "yes\nno" | rofi -dmenu -p "Confirm?" -bw 0 -lines 2 -separator-style none -location 0 -width 10 -hide-scrollbar -padding 5)
 	[[ "$confirm" = "yes" ]] 
 	return	
@@ -21,5 +21,6 @@ if [ ! -z $res ]; then
 		;;
 		exit)
 			confirm && i3msg exit
+		;;
 	esac
 fi

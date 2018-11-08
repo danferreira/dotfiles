@@ -1,5 +1,2 @@
 rofi.theme: ~/.cache/wal/colors-rofi-dark.rasi
 rofi.font: Source Sans Pro 12
-rofi.lines: 10
-rofi.show-icons: true
-rofi.display-drun: Search

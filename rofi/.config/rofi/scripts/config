@@ -1,0 +1,63 @@
+#!/usr/bin/sh
+
+editor="code-oss"
+
+configs=(
+'i3'
+'Polybar'
+'Rofi'
+'Ranger'
+'Home'
+'Scripts'
+'Compton'
+)
+
+result=$(printf "%s\n" "${configs[@]}" | rofi -dmenu -p "Edit Config" -lines "${#configs[@]}" -width 180)
+
+if [ "$result" ]; then
+	case $result in
+		'i3') i3-msg exec $editor ~/.i3/config ;;
+		'Polybar')
+			polyconfig=$(echo "Config;Apps;Launch" | rofi -sep ";" -dmenu -p "Polybar" -lines 3 -width 160)
+			if [ "$polyconfig" = "Launch" ]; then
+				i3-msg exec $editor "~/.config/polybar/launch.sh"
+			elif [ "$polyconfig" = "Apps" ]; then
+				app=$( ls "${HOME}/.config/polybar/scripts/" | rofi -dmenu -p "Polybar Apps" -lines "$(ls -1 ${HOME}/.config/polybar/scripts/ | wc -l)" -width 240)
+				if [ $app ]; then
+					i3-msg exec $editor "${HOME}/.config/polybar/scripts/${app}"
+				fi
+			elif [ "$polyconfig" == "Config" ]; then
+				i3-msg exec $editor ${HOME}/.config/polybar/config
+			fi
+		;;
+		'Compton')
+            i3-msg exec $editor ~/.config/compton.conf
+		;;
+		'Rofi')
+			roficonfig=$(echo "Apps;Config" | rofi -sep ";" -dmenu -p "Rofi" -lines 2 -width 160)
+
+			if [ "$roficonfig" = "Apps" ]; then
+				app=$( ls "${HOME}/.config/rofi/scripts/" | rofi -dmenu -p "Rofi Apps" -lines "$(ls -1 ${HOME}/.config/rofi/scripts/ | wc -l)" -width 250)
+				if [ $app ]; then
+					i3-msg exec $editor "${HOME}/.config/rofi/scripts/${app}"
+				fi
+			elif [ $roficonfig ]; then
+				i3-msg exec $editor ~/.config/rofi/config
+			fi
+		;;
+		'Scripts')
+			script=$( ls "${HOME}/.scripts/" | rofi -dmenu -p "Polybar Apps" -lines "$(ls -1 ${HOME}/.scripts/ | wc -l)" -width 240)
+
+			if [ $script ]; then
+				i3-msg exec $editor ~/.scripts/${script}
+			fi
+		;;
+		'Home')
+			homefiles=$(echo ".Xresources;.xinitrc;.xprofile;.zshrc" | rofi -sep ";" -dmenu -p "Home Files" -lines 4 -width 190)
+
+			if [ $homefiles ]; then
+				i3-msg exec $editor ~/${homefiles}
+			fi
+		;;
+	esac
+fi
