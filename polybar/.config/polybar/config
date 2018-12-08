@@ -49,8 +49,8 @@ font-2 = Font Awesome 5 Free:style=Solid:pixelsize=12
 font-3 = Font Awesome 5 Brands:pixelsize=12
 
 modules-left = i3
-modules-center = xwindow
-modules-right = cpu memory temperature battery date power
+modules-center = popup-calendar
+modules-right = cpu memory temperature battery power
 
 tray-position = right
 tray-padding = 2
@@ -66,12 +66,14 @@ label = %title:0:30:...%
 type = internal/i3
 
 index-sort = true
-;strip-wsnumbers = true
 pin-workspaces = true
+
 
 ws-icon-0 = "1:web;"
 ws-icon-1 = "2:code;"
-ws-icon-2 = "3:media;"
+ws-icon-2 = "3:term;"
+ws-icon-3 = "4:chat;"
+ws-icon-4 = "5:media;"
 ws-icon-default = ""
 
 label-mode-padding = 1
@@ -82,23 +84,17 @@ label-focused-background = ${colors.background-alt}
 label-focused-underline= ${colors.primary}
 label-focused-padding = ${self.label-mode-padding}
 
-; unfocused = Inactive workspace on any monitor
 label-unfocused = %icon%
 label-unfocused-padding = ${self.label-mode-padding}
 
-; visible = Active workspace on unfocused monitor
 label-visible = %icon%
 label-visible-background = ${self.label-focused-background}
 label-visible-underline = ${self.label-focused-underline}
 label-visible-padding = ${self.label-mode-padding}
 
-; urgent = Workspace with urgency hint set
 label-urgent = %icon%
 label-urgent-background = ${colors.alert}
 label-urgent-padding = 2
-
-; Separator in between workspaces
-; label-separator = |
 
 [module/cpu]
 type = internal/cpu
@@ -116,14 +112,11 @@ label = %percentage_used%%
 type = internal/date
 interval = 5
 
-date-alt = " %Y-%m-%d"
-
+date = %a %d %B
 time = %H:%M
-time-alt = %H:%M:%S
 
-format-prefix =
-
-label = %date% %time%
+format = [ <label> ]
+label = %time% - %date%
 
 [module/battery]
 type = internal/battery
@@ -146,34 +139,34 @@ animation-charging-1 = 
 animation-charging-2 = 
 animation-charging-3 = 
 animation-charging-4 = 
-; Framerate in milliseconds
 animation-charging-framerate = 1000
-
-;ramp-capacity-0 = %{F#F90000}
-;ramp-capacity-1 = 
-;ramp-capacity-2 =
-;ramp-capacity-3 = 
-;ramp-capacity-4 = 
-
 
 [module/temperature]
 type = internal/temperature
 thermal-zone = 0
-warn-temperature = 60
+warn-temperature = 70
 hwmon-path = /sys/devices/virtual/hwmon/hwmon2/temp1_input
 
-format-prefix = " "
-format = <label>
+format = <ramp> <label>
 
-format-warn-prefix = " "
-format-warn-prefix-foreground = ${colors.alert}
+format-warn = <ramp> <label-warn>
+format-warn-foreground = ${colors.alert}
 label-warn-foreground = ${colors.alert}
+
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+ramp-3 = 
+ramp-4 = 
+ramp-5 = 
+ramp-6 = 
+ramp-7 = 
+ramp-8 = 
+ramp-9 = 
 
 [module/network]
 type = internal/network
 interface = wlp2s0
-; Seconds to sleep between updates
-; Default: 1
 interval = 3.0
 
 ; Test connectivity every Nth update
@@ -184,10 +177,59 @@ interval = 3.0
 
 label-connected =  %downspeed:3%  %upspeed:3%
 
+[module/pulseaudio]
+type = internal/pulseaudio
+
+; Sink to be used, if it exists (find using `pacmd list-sinks`, name field)
+; If not, uses default sink
+;sink = alsa_output.pci-0000_12_00.3.analog-stereo
+
+interval = 5
+
+format-volume = <bar-volume>
+label-volume = 
+
+format-muted-prefix = " "
+label-muted = muted
+label-muted-foreground = #666
+
+bar-volume-width = 10
+bar-volume-foreground-0 = #55aa55
+bar-volume-foreground-1 = #55aa55
+bar-volume-foreground-2 = #55aa55
+bar-volume-foreground-3 = #55aa55
+bar-volume-foreground-4 = #55aa55
+bar-volume-foreground-5 = #f5a70a
+bar-volume-foreground-6 = #ff5555
+bar-volume-gradient = false
+bar-volume-indicator = |
+bar-volume-indicator-font = 2
+bar-volume-fill = ─
+bar-volume-fill-font = 2
+bar-volume-empty = ─
+bar-volume-empty-font = 2
+
+[module/pa-output]
+type = custom/script
+exec = ~/.config/polybar/scripts/pulseaudio --output_volume_listener
+tail = true
+click-right = ~/.config/polybar/scripts/pulseaudio --output
+click-left = ~/.config/polybar/scripts/pulseaudio --mute
+scroll-up =  ~/.config/polybar/scripts/pulseaudio --volume_up
+scroll-down = ~/.config/polybar/scripts/pulseaudio --volume_down
+
+format = 
+
 [module/power]
 type = custom/text
 content = 
 click-left = ~/.config/rofi/scripts/power &
+
+[module/popup-calendar]
+type = custom/script
+exec = "LC_ALL=en_US.utf8 ~/.config/polybar/scripts/popup-calendar"
+interval = 5
+click-left = "LC_ALL=en_US.utf8 ~/.config/polybar/scripts/popup-calendar --popup"
 
 [settings]
 screenchange-reload = true

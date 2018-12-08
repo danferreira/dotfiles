@@ -1,12 +1,12 @@
 #!/bin/sh
 
-case $SRANDRD_ACTION in
+case "${SRANDRD_OUTPUT} ${SRANDRD_EVENT}" in
   "HDMI1 connected") 
-	xrandr --output HDMI1 --auto --right-of eDP1
-	notify-send "HDMI1 connected" 
+		notify-send "HDMI1 connected" 
+		display-options
 	;;
   "HDMI1 disconnected") 
-	xrandr --output HDMI1 --off
-	notify-send "HDMI1 disconnected"
+		notify-send "HDMI1 disconnected"
+		xrandr --output eDP1 --auto --primary
 	;;
 esac

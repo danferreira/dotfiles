@@ -5,10 +5,10 @@ result=$(echo -e "extend\nmirror\nswitch" | rofi -dmenu -p "Display connected" -
 if [ ! -z $result ]; then
     case $result in
         extend)
-            xrandr --output eDP1 --auto --primary --output HDMI1 --auto --right-of eDP1
+            xrandr --output eDP1 --auto --output HDMI1 --auto --primary --left-of eDP1
             ;;
         mirror)
-            xrandr --output eDP1 --auto --primary --output HDMI1 --auto --same-as eDP1
+            xrandr --output eDP1 --auto --output HDMI1 --auto --primary --same-as eDP1
             ;;
         switch)
             to=$(echo -e "eDP1\nHDMI" | rofi -dmenu -p "Switch to" -lines 2 -width 12)
