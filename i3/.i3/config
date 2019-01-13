@@ -165,6 +165,7 @@ for_window [class="VirtualBox Machine"] floating enable resize set 1024 px 810 p
 for_window [class="terminal" title="floating"] floating enable
 for_window [class="Yad"] floating enable
 for_window [class="Nm-connection-editor"] floating enable
+for_window [class="Peek"] floating enable
 
 # Switch to workspace with urgent window automatically
 for_window [urgent=latest] focus
@@ -204,10 +205,10 @@ smart_gaps on
 smart_borders on
 
 # Autostart applications
-exec --no-startup-id pulseaudio
-exec --no-startup-id pa-applet
+exec_always --no-startup-id pulseaudio -k;pulseaudio
+exec_always --no-startup-id killall -q pa-applet;pa-applet
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec --no-startup-id nm-applet
+exec_always --no-startup-id nm-applet
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id compton -b
 #exec --no-startup-id srandrd $HOME/.scripts/display_handler

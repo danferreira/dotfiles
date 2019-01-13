@@ -21,4 +21,6 @@ if [ ! -z $result ]; then
                     ;;
             esac
     esac
+
+    sh -c ~/.config/polybar/launch.sh
 fi

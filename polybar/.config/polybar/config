@@ -169,13 +169,11 @@ type = internal/network
 interface = wlp2s0
 interval = 3.0
 
-; Test connectivity every Nth update
-; A value of 0 disables the feature
-; NOTE: Experimental (needs more testing)
-; Default: 0
-;ping-interval = 3
-
-label-connected =  %downspeed:3%  %upspeed:3%
+label-connected =  %essid%
+label-disconnected = not connected
+click = ~/Downloads/rofi-wifi-menu/rofi-wifi-menu.sh
+;label-connected =  %downspeed:3%  %upspeed:3%
+format-connected = %{A1:~./Downloads/rofi-wifi-menu/rofi-wifi-menu.sh&:}connected%{A}
 
 [module/pulseaudio]
 type = internal/pulseaudio
@@ -219,6 +217,12 @@ scroll-up =  ~/.config/polybar/scripts/pulseaudio --volume_up
 scroll-down = ~/.config/polybar/scripts/pulseaudio --volume_down
 
 format = 
+
+[module/rofi-wifi]
+type = custom/script
+;exec = ~/Downloads/rofi-wifi-menu/rofi-wifi-menu.sh
+click-right = ~/Downloads/rofi-wifi-menu/rofi-wifi-menu.sh
+;click-left = ~/.config/polybar/scripts/pulseaudio --mute
 
 [module/power]
 type = custom/text

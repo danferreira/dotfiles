@@ -21,13 +21,23 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Oh-my-zsh plugins. (~/.oh-my-zsh/plugins/* or ~/.oh-my-zsh/custom/plugins/)
 plugins=(
-	git
 	zsh-autosuggestions
 	zsh-syntax-highlighting
 )
 
 # Spaceship theme settings
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+SPACESHIP_PROMPT_ORDER=(
+	time
+  	user
+  	dir
+  	git
+  	exec_time
+  	line_sep
+  	battery
+  	exit_code
+  	char
+)
 
 # Sources
 source $ZSH/oh-my-zsh.sh
