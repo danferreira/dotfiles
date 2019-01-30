@@ -1,0 +1,48 @@
+Config { font = "xft:Source Code Pro:style=Regular:size=14,Font Awesome 5 Free Solid:size=12,Font Awesome 5 Brands Regular:size=12"
+       , bgColor = "black"
+       , fgColor = "white"
+       , border = TopB 2
+       , borderColor = "black"
+       , position = TopW L 100
+       , alignSep = "}{"
+       , template = "%StdinReader% } [%date%] { %multicpu%  %coretemp% %battery% %default:Master%"
+       , commands = [ Run Date "%H:%M - %a %d %B" "date" 10,
+                      Run StdinReader,    
+                      -- cpu activity monitor
+                      Run MultiCpu       [ "--template" , "\xf2db <total>%"
+                             , "--Low"      , "50"         -- units: %
+                             , "--High"     , "85"         -- units: %
+                             , "--low"      , "green"
+                             , "--normal"   , "orange"
+                             , "--high"     , "red"
+                             ] 10,        
+                      Run Battery [ "--template" , "<acstatus>"
+                            , "--Low"      , "10"        -- units: %
+                            , "--High"     , "80"        -- units: %
+                            , "--low"      , "red"
+                            , "--normal"   , "orange"
+                            , "--high"     , "green"
+                            , "--"
+                            , "-o"	, "<left>%"
+                            , "-O"	, "<fc=#dAA520>Charging</fc>"
+                            , "-i"	, "<fc=#006000>Charged</fc>"
+                            , "--off-icon-pattern", "\xf240"
+                            , "--on-icon-pattern", "\xf0e7"
+                            , "--idle-icon-pattern", "\xf0e7"
+                            ] 50,
+                       Run Volume "default" "Master" [ "-t", "<status> <volume>%"
+                                                  , "--"
+                                                  , "-o", "\xf026"
+                                                  , "-O", "\xf028"
+                                                  , "-C", "gray"
+                                                  , "-c", "#666666"
+                                                  ] 10,
+                        Run CoreTemp       [ "--template" , "<core0>°C"
+                             , "--Low"      , "70"        -- units: °C
+                             , "--High"     , "80"        -- units: °C
+                             , "--low"      , "green"
+                             , "--normal"   , "orange"
+                             , "--high"     , "red"
+                             ] 50
+                    ]
+       }

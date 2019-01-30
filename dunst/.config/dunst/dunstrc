@@ -1,0 +1,125 @@
+[global]
+    ### Display ###
+    monitor = 0
+
+    follow = mouse
+
+    geometry = "300x20-5+34"
+
+    indicate_hidden = yes
+
+    shrink = no
+
+    transparency = 5
+
+    notification_height = 0
+
+    separator_height = 4
+
+    padding = 20
+
+    horizontal_padding = 20
+
+    frame_width = 3
+
+    frame_color = "#aaaaaa"
+
+    separator_color = frame
+
+    sort = yes
+
+    idle_threshold = 120
+
+    ### Text ###
+
+    font = Monospace 12
+    
+    line_height = 0
+
+    markup = full
+
+    format =  "<b><span foreground='#F7486F'>%s</span></b>\n%b"
+
+    alignment = center
+
+    show_age_threshold = 60
+
+    # Split notifications into multiple lines if they don't fit into
+    # geometry.
+    word_wrap = yes
+
+    ellipsize = middle
+
+    # Ignore newlines '\n' in notifications.
+    ignore_newline = no
+
+    stack_duplicates = true
+
+    hide_duplicate_count = false
+
+    show_indicators = no
+
+    ### Icons ###
+
+    icon_position = left
+
+    max_icon_size = 64
+
+    icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
+
+    ### History ###
+
+    sticky_history = yes
+
+    history_length = 20
+
+    ### Misc/Advanced ###
+
+    dmenu = /usr/bin/dmenu -p dunst:
+
+    browser = /usr/bin/google-chrome-stable
+
+    always_run_script = true
+
+    title = Dunst
+
+    class = Dunst
+
+    startup_notification = false
+
+    ### Legacy
+    force_xinerama = false
+
+[experimental]
+    per_monitor_dpi = false
+
+[shortcuts]
+
+    close = ctrl+space
+
+    close_all = ctrl+shift+space
+
+    history = ctrl+grave
+
+    context = ctrl+shift+period
+
+[urgency_low]
+    background = "#000000"
+    foreground = "#EEFFFF"
+    timeout = 10
+    # Icon for notifications with low urgency, uncomment to enable
+    #icon = /path/to/icon
+
+[urgency_normal]
+    background = "#000000"
+    foreground = "#EEFFFF"
+    timeout = 10
+    # Icon for notifications with normal urgency, uncomment to enable
+    #icon = /path/to/icon
+
+[urgency_critical]
+    background = "#000000"
+    foreground = "#EEFFFF"
+    timeout = 0
+    # Icon for notifications with critical urgency, uncomment to enable
+    #icon = /path/to/icon

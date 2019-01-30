@@ -1,5 +1,5 @@
 # Setting $PATH.
-export PATH=$HOME/.yarn/bin:$PATH
+export PATH=$HOME/.local/bin:$HOME/.yarn/bin:$PATH
 
 # Path to oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -42,21 +42,17 @@ SPACESHIP_PROMPT_ORDER=(
 # Sources
 source $ZSH/oh-my-zsh.sh
 
-#Programs
-ranger() {
-    if [ -z "$RANGER_LEVEL" ]; then
-        /usr/bin/ranger "$@"
-    else
-        exit
-    fi
-}
 # Import colorscheme from 'wal' asynchronously
 # &   # Run the process in the background.
 # ( ) # Hide shell job control messages.
-(cat ~/.cache/wal/sequences &)
+#(cat ~/.cache/wal/sequences &)
 
 # Alternative (blocks terminal for 0-3ms)
-cat ~/.cache/wal/sequences
+#cat ~/.cache/wal/sequences
 
 # To add support for TTYs this line can be optionally added.
-source ~/.cache/wal/colors-tty.sh
+#source ~/.cache/wal/colors-tty.sh
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
