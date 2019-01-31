@@ -68,7 +68,7 @@ myManageHook = composeAll
   , isDialog --> doCenterFloat
   ]
 
-myEventHook = fullscreenEventHook
+myEventHook = fullscreenEventHook <+> removeBordersEventHook
 
 myLogHook proc = do
   dynamicLogWithPP xmobarPP { ppOutput          = hPutStrLn proc
