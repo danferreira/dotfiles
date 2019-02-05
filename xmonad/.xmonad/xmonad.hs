@@ -50,12 +50,14 @@ main = do
     , startupHook        = myStartupHook <+> startupHook desktopConfig
     }
 
+-- User stuff
 myTerminal = "termite"
 myBorderWidth = 3
 myNormalBorderColor = "#c5c8c6"
 myFocusedBorderColor = "#F7486F"
-myWorkspaces = ["\xf268", "\xf121", "\xf120", "\xf008", "\xf07b", "\xf3ed"]
+myWorkspaces = ["<fn=2>\xf268</fn>", "<fn=1>\xf121</fn>", "<fn=1>\xf120</fn>", "<fn=1>\xf008</fn>", "<fn=1>\xf07b</fn>", "<fn=1>\xf3ed</fn>"]
 
+-- Hooks
 myLayoutHook = smartBorders
 
 myManageHook = composeAll
@@ -65,6 +67,7 @@ myManageHook = composeAll
   , className =? "Pcmanfm" --> doShift (myWorkspaces !! 4)
   , className =? "openfortiGUI" --> doShift (myWorkspaces !! 5)
   , className =? "Peek" --> doFloat
+  , className =? "Yad" --> doFloat
   , isDialog --> doCenterFloat
   ]
 
@@ -133,6 +136,8 @@ myKeys conf@(XConfig { XMonad.modMask = modMask }) =
        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]
        ]
 
+
+-- Utils
 removeBordersEventHook :: Event -> X All
 removeBordersEventHook ev = do
   whenX (className =? "mpv" `runQuery` w) $ withDisplay $ \d ->

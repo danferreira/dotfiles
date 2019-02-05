@@ -1,5 +1,0 @@
-# Deactivate annoying beep sound
-xset -b
-
-# Set Scroll Method
-xinput --set-prop "DELL0781:00 06CB:7E7E Touchpad" "libinput Scroll Method Enabled" 0 1 0
