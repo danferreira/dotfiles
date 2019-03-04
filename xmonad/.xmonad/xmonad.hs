@@ -137,7 +137,7 @@ myWorkspaceKeys =
        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]
        ]
 
--- see: https://github.com/xmonad/xmonad-contrib/issues/183
+-- see: https://github.com/xmonad/xmonad-contrib/pull/109
 addNETSupported :: Atom -> X ()
 addNETSupported x   = withDisplay $ \dpy -> do
     r               <- asks theRoot
