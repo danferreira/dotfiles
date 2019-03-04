@@ -27,51 +27,58 @@ import           XMonad.Config.Desktop
 import qualified XMonad.StackSet               as W
 import qualified Data.Map                      as M
 import           Data.Monoid                    ( All(..) )
+import           Control.Monad (when, join)
+import           Data.Maybe (maybeToList)
+
 import           XMonad.Util.SpawnOnce          ( spawnOnce )
 import           XMonad.Layout.NoBorders        ( smartBorders )
+import           XMonad.Util.EZConfig           (removeKeys, additionalKeys)
 import           XMonad.Util.Run                ( spawnPipe )
+import           XMonad.Layout.Spacing
 
 import           System.IO                      ( hPutStrLn )
 
 main = do
   xmproc <- spawnPipe "xmobar"
   xmonad $ desktopConfig
-    { modMask            = mod4Mask
+    { modMask            = myModMask
     , borderWidth        = myBorderWidth
     , normalBorderColor  = myNormalBorderColor
     , focusedBorderColor = myFocusedBorderColor
     , terminal           = myTerminal
     , workspaces         = myWorkspaces
-    , keys               = myKeys
     , manageHook         = myManageHook <+> manageHook desktopConfig
     , layoutHook         = myLayoutHook $ layoutHook desktopConfig
     , logHook            = myLogHook xmproc <+> logHook desktopConfig
     , handleEventHook    = myEventHook <+> handleEventHook desktopConfig
-    , startupHook        = myStartupHook <+> startupHook desktopConfig
-    }
+    , startupHook        = myStartupHook <+> startupHook desktopConfig <+> addEWMHFullscreen
+    } `additionalKeys` myAdditionalKeys
+      `additionalKeys` myWorkspaceKeys
 
 -- User stuff
+myModMask = mod4Mask
 myTerminal = "termite"
-myBorderWidth = 3
+myBorderWidth = 2
 myNormalBorderColor = "#c5c8c6"
 myFocusedBorderColor = "#F7486F"
-myWorkspaces = ["<fn=2>\xf268</fn>", "<fn=1>\xf121</fn>", "<fn=1>\xf120</fn>", "<fn=1>\xf008</fn>", "<fn=1>\xf07b</fn>", "<fn=1>\xf3ed</fn>"]
+myWorkspaces = ["<fn=2>\xf269</fn>", "<fn=1>\xf121</fn>", "<fn=1>\xf120</fn>", "<fn=1>\xf07b</fn>", "<fn=1>\xf3ed</fn>", "<fn=1>\xf008</fn>"]
 
 -- Hooks
-myLayoutHook = smartBorders
+myLayoutHook = smartBorders 
 
 myManageHook = composeAll
   [ className =? "Google-chrome" --> doShift (myWorkspaces !! 0)
+  , className =? "Firefox" --> doShift (myWorkspaces !! 0)
   , className =? "code-oss" --> doShift (myWorkspaces !! 1)
-  , className =? "mpv" --> doShift (myWorkspaces !! 3) <+> doCenterFloat
-  , className =? "Pcmanfm" --> doShift (myWorkspaces !! 4)
-  , className =? "openfortiGUI" --> doShift (myWorkspaces !! 5)
+  , className =? "Pcmanfm" --> doShift (myWorkspaces !! 3)
+  , className =? "openfortiGUI" --> doShift (myWorkspaces !! 4)
+  , className =? "mpv" --> doShift (myWorkspaces !! 5) <+> doCenterFloat
   , className =? "Peek" --> doFloat
   , className =? "Yad" --> doFloat
   , isDialog --> doCenterFloat
   ]
 
-myEventHook = fullscreenEventHook <+> removeBordersEventHook
+myEventHook = fullscreenEventHook 
 
 myLogHook proc = do
   dynamicLogWithPP xmobarPP { ppOutput          = hPutStrLn proc
@@ -83,64 +90,66 @@ myLogHook proc = do
                             , ppLayout          = xmobarColor "#c5c8c6" ""
                             }
 
-myStartupHook = spawnOnce "compton -b"
+myStartupHook = do
+    spawnOnce "compton -b"
+    spawnOnce "light-locker"
 
 -- Keyboard shortcuts
-myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
-myKeys conf@(XConfig { XMonad.modMask = modMask }) =
-  M.fromList
-    $  [ -- launch a terminal
-         ((modMask, xK_Return), spawn $ XMonad.terminal conf)
-       , -- launch ROFI 
-         ((modMask, xK_d)     , spawn " ~/.config/rofi/scripts/drun")
-       , -- screenshot
-         ((0, xK_Print)       , spawn "maim | xclip -select c -t image/png")
-       , ( (modMask, xK_Print)
-         , spawn
-           "maim -i $(xdotool getactivewindow) | xclip -select c -t image/png"
-         )
-       , ( (modMask .|. shiftMask, xK_Print)
-         , spawn "maim -s | xclip -select c -t image/png"
-         )
-       ,
-         -- multimedia
-         ((0, xF86XK_AudioRaiseVolume), spawn "amixer -D pulse sset Master 2%+")
-       , ((0, xF86XK_AudioLowerVolume), spawn "amixer -D pulse sset Master 2%-")
-       , ((0, xF86XK_AudioMute), spawn "amixer -D pulse sset Master toggle")
-       , ((0, xF86XK_MonBrightnessUp)       , spawn "xbacklight -inc 10")
-       , ((0, xF86XK_MonBrightnessDown)     , spawn "xbacklight -dec 10")
-       , -- Swap the focused window and the master window
-         ((modMask .|. shiftMask, xK_Return), windows W.swapMaster)
-       , -- close focused window
-         ((modMask, xK_q)                   , kill)
-       ,
-         -- Reset the layouts on the current workspace to default
-         ((modMask .|. shiftMask, xK_space) , setLayout $ layoutHook conf)
-       , -- Rotate through the available layout algorithms
-         ((modMask, xK_space)               , sendMessage NextLayout)
-       , -- Push window back into tiling
-         ((modMask, xK_t)                   , withFocused $ windows . W.sink)
-       , -- Restart xmonad
-         ( (modMask .|. shiftMask, xK_r)
-         , spawn "xmonad --recompile; xmonad --restart"
-         )
+myAdditionalKeys :: [((KeyMask, KeySym), X ())]
+myAdditionalKeys =
+    [ -- launch a terminal
+      ((myModMask, xK_Return), spawn myTerminal)
+      
+    , -- launch ROFI 
+      ((myModMask, xK_d)     , spawn "~/.config/rofi/scripts/drun")
+      
+    , -- screenshot
+      ((0, xK_Print)       , spawn "maim | xclip -select c -t image/png")
+    , ((myModMask, xK_Print),  spawn "maim -i $(xdotool getactivewindow) | xclip -select c -t image/png")
+    , ((myModMask .|. shiftMask, xK_Print), spawn "maim -s | xclip -select c -t image/png")
 
-     -- Quit xmonad
-       , ((modMask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
-       ]
-    ++
+    , -- xrandr options
+      ((myModMask, xK_o), spawn ".config/rofi/scripts/display-options")
+    
+    , -- multimedia
+      ((0, xF86XK_AudioRaiseVolume), spawn "amixer -D pulse sset Master 2%+")
+    , ((0, xF86XK_AudioLowerVolume), spawn "amixer -D pulse sset Master 2%-")
+    , ((0, xF86XK_AudioMute), spawn "amixer -D pulse sset Master toggle")
+    , ((0, xF86XK_MonBrightnessUp)       , spawn "xbacklight -inc 10")
+    , ((0, xF86XK_MonBrightnessDown)     , spawn "xbacklight -dec 10")
+
+    , -- close focused window
+      ((myModMask, xK_q)                   , kill)
+
+     , -- Swap the focused window and the master window
+      ((myModMask .|. shiftMask, xK_Return), windows W.swapMaster)
+      
+    , -- Restart xmonad
+      ((myModMask .|. shiftMask, xK_r), spawn "xmonad --recompile; xmonad --restart")
+    ]
+
+myWorkspaceKeys :: [((KeyMask, KeySym), X ())]
+myWorkspaceKeys =
     -- mod-[1..9] %! Switch to workspace N
     -- mod-shift-[1..9] %! Move client to workspace N
-       [ ((m .|. modMask, k), windows $ f i)
-       | (i, k) <- zip (workspaces conf) [xK_1 .. xK_9]
+       [ ((m .|. myModMask, k), windows $ f i)
+       | (i, k) <- zip myWorkspaces [xK_1 .. xK_9]
        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]
        ]
 
+-- see: https://github.com/xmonad/xmonad-contrib/issues/183
+addNETSupported :: Atom -> X ()
+addNETSupported x   = withDisplay $ \dpy -> do
+    r               <- asks theRoot
+    a_NET_SUPPORTED <- getAtom "_NET_SUPPORTED"
+    a               <- getAtom "ATOM"
+    liftIO $ do
+       sup <- (join . maybeToList) <$> getWindowProperty32 dpy a_NET_SUPPORTED r
+       when (fromIntegral x `notElem` sup) $
+          changeProperty32 dpy r a_NET_SUPPORTED a propModeAppend [fromIntegral x]
 
--- Utils
-removeBordersEventHook :: Event -> X All
-removeBordersEventHook ev = do
-  whenX (className =? "mpv" `runQuery` w) $ withDisplay $ \d ->
-    io $ setWindowBorderWidth d w 0
-  return (All True)
-  where w = ev_window ev
+addEWMHFullscreen :: X ()
+addEWMHFullscreen   = do
+    wms <- getAtom "_NET_WM_STATE"
+    wfs <- getAtom "_NET_WM_STATE_FULLSCREEN"
+    mapM_ addNETSupported [wms, wfs]
