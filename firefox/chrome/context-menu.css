@@ -1,0 +1,13 @@
+/*
+ * Context-menu
+ */
+
+#contentAreaContextMenu { margin: 10px 0px 0px 10px!important; }
+
+#context-pocket { display: none!important; }
+
+#context-sendpagetodevice, #context-sep-sendpagetodevice,
+#context-sendlinktodevice, #context-sep-sendlinktodevice,
+#context_sendTabToDevice, #context_sendTabToDevice_separator {
+  display: none !important;
+}

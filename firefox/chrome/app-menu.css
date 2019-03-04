@@ -1,0 +1,15 @@
+/*
+ * Remove Sync option
+ */
+
+#appMenu-fxa-container, #appMenu-fxa-container + toolbarseparator {
+    display: none !important;
+}
+
+/*
+ * Remove Edit option
+ */
+
+#appMenu-edit-controls, #appMenu-edit-controls + toolbarseparator {
+    display: none !important;
+}
