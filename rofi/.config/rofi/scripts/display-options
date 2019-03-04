@@ -1,26 +1,31 @@
 #!/bin/sh
 
+eDP=$(xrandr | grep -E "eDP[0-9-]+ connected" | sed -e "s/\([A-Z0-9]\+\) connected.*/\1/")
+HDMI=$(xrandr | grep -E "HDMI[0-9-]+ connected" | sed -e "s/\([A-Z0-9]\+\) connected.*/\1/")
+
 result=$(echo -e "extend\nmirror\nswitch" | rofi -dmenu -p "Display connected" -lines 3 -width 12)
 
 if [ ! -z $result ]; then
     case $result in
         extend)
-            xrandr --output eDP1 --auto --output HDMI1 --auto --primary --left-of eDP1
+            xrandr --output $eDP --auto --output $HDMI --auto --primary --left-of $eDP
+            pacmd set-card-profile 0 output:hdmi-stereo
             ;;
         mirror)
-            xrandr --output eDP1 --auto --output HDMI1 --auto --primary --same-as eDP1
+            xrandr --output $eDP --auto --output $HDMI --auto --primary --same-as $eDP
+            pacmd set-card-profile 0 output:hdmi-stereo
             ;;
         switch)
             to=$(echo -e "eDP1\nHDMI" | rofi -dmenu -p "Switch to" -lines 2 -width 12)
             case $to in
                 eDP1)
-                    xrandr --output eDP1 --auto --primary --output HDMI1 --off
+                    xrandr --output $eDP --auto --primary --output $HDMI --off
+                    pacmd set-card-profile 0 output:analog-stereo
                     ;;
                 HDMI)
-                    xrandr --output HDMI1 --auto --primary --output eDP1 --off
+                    xrandr --output $HDMI --auto --primary --output $eDP --off
+                    pacmd set-card-profile 0 output:hdmi-stereo
                     ;;
             esac
     esac
-
-    sh -c ~/.config/polybar/launch.sh
 fi

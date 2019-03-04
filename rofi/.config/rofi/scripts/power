@@ -6,7 +6,17 @@ confirm() {
 	return	
 }
 
-res=$(echo -e "reboot\nshutdown\nsuspend\nexit" | rofi -dmenu -p "Power Options" -bw 0 -lines 4 -width 10 -padding 5)
+res=$(echo -e "reboot\nshutdown\nsuspend\nlock" | rofi -dmenu -p "Power Options" -bw 0 -lines 4 -width 10 -padding 5)
+
+
+exit_function() {
+  if hash light-locker 2>/dev/null; then
+      echo 'light locker'
+      light-locker-command -l
+  elif hash i3msg 2>/dev/null; then
+      i3msg exit
+  fi
+}
 
 if [ ! -z $res ]; then
 	case $res in
@@ -19,8 +29,8 @@ if [ ! -z $res ]; then
 		suspend)
 			confirm && systemctl suspend
 		;;
-		exit)
-			confirm && i3msg exit
+		lock)
+			confirm && exit_function
 		;;
 	esac
 fi
