@@ -1,3 +1,3 @@
 #!/bin/sh
 
-rofi -show drun -display-drun "Search" -lines 10 -show-icons
+rofi -show drun -display-drun "Search" -lines 5 -show-icons
