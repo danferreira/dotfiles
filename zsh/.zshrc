@@ -23,7 +23,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 plugins=(
   git
   docker
-	zsh-autosuggestions
+  zsh-autosuggestions
   zsh-syntax-highlighting
 )
 

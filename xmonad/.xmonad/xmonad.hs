@@ -58,10 +58,13 @@ main = do
 -- User stuff
 myModMask = mod4Mask
 myTerminal = "termite"
-myBorderWidth = 2
+myBorderWidth = 0
 myNormalBorderColor = "#c5c8c6"
 myFocusedBorderColor = "#F7486F"
-myWorkspaces = ["<fn=2>\xf269</fn>", "<fn=1>\xf121</fn>", "<fn=1>\xf120</fn>", "<fn=1>\xf07b</fn>", "<fn=1>\xf3ed</fn>", "<fn=1>\xf008</fn>"]
+myWorkspaces = click $ ["<fn=2>\xf269</fn>", "<fn=1>\xf121</fn>", "<fn=1>\xf120</fn>", "<fn=1>\xf07b</fn>", "<fn=1>\xf3ed</fn>", "<fn=1>\xf008</fn>"]
+               where click l = [ "<action=xdotool key super+" 
+                               ++ show n ++ ">" ++ ws ++ "</action>" | (i,ws) <- zip [1..] l, let n = i]
+
 
 -- Hooks
 myLayoutHook = smartBorders 
@@ -72,9 +75,8 @@ myManageHook = composeAll
   , className =? "code-oss" --> doShift (myWorkspaces !! 1)
   , className =? "Pcmanfm" --> doShift (myWorkspaces !! 3)
   , className =? "openfortiGUI" --> doShift (myWorkspaces !! 4)
-  , className =? "mpv" --> doShift (myWorkspaces !! 5) <+> doCenterFloat
+  , className =? "vlc" --> doShift (myWorkspaces !! 5)
   , className =? "Peek" --> doFloat
-  , className =? "Yad" --> doFloat
   , isDialog --> doCenterFloat
   ]
 

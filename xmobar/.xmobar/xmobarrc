@@ -9,9 +9,9 @@ Config { font = "xft:Source Code Pro:style=Regular:size=14"
        , borderColor = "black"
        , position = TopW C 98
        , alignSep = "}{"
-       , template = "%StdinReader% } <action='gsimplecal'>[%date%]</action> { %multicpu% | %coretemp% | %battery% | %default:Master% | <action='.config/rofi/scripts/power'><fn=1><raw=1:/></fn></action>"
+       , template = "%UnsafeStdinReader% } <action='gsimplecal'>[%date%]</action> { %multicpu% | %coretemp% | %battery% | %default:Master% | <action='.config/rofi/scripts/power'><fn=1><raw=1:/></fn></action>"
        , commands = [ Run Date "%H:%M - %a %d %B" "date" 10,
-                      Run StdinReader,    
+                      Run UnsafeStdinReader,    
                       Run MultiCpu       [ "--template" , "<fn=1>\xf2db</fn> <total>%"
                              , "--Low"      , "50"         -- units: %
                              , "--High"     , "85"         -- units: %
