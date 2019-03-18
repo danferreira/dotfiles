@@ -6,7 +6,6 @@ install-utils:
 
 install-zsh:
 	pacman -S zsh zsh-completions
-	chsh -s /bin/zsh
 
 install-terminal:
 	pacman -S alacritty
