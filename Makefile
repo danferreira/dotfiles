@@ -1,5 +1,24 @@
-install-default:
-	pacman -Syu neovim htop intel-ucode tar unrar unzip xarchiver xorg-server xorg-xbacklight xorg-xrandr zsh zsh-completions
+install-xorg:
+	pacman -Syu xorg-server xorg-xbacklight xorg-xrandr
+
+install-utils:
+	pacman -Syu neovim htop tar unrar unzip xarchiver
+
+install-zsh:
+	pacman -Syu zsh zsh-completions
+
+install-oh-my-zsh:
+	sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+	#install Spaceship Prompt theme
+	git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
+	ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+
+install-yay:
+	git clone https://aur.archlinux.org/yay.git
+	cd yay
+	makepkg -si
+	cd ..
+	rm -rf yay
 
 install-xmonad:
 	yay -Syu stack-static wireless_tools
@@ -11,18 +30,13 @@ install-xmonad:
 	git clone "https://github.com/jaor/xmobar" xmobar-git
 	stack init
 	stack install --flag xmobar:all_extensions
-	
-install-yay:
-	git clone https://aur.archlinux.org/yay.git
-	cd yay
-	makepkg -si
-	cd ..
-	rm -rf yay
+
+install-display-manager:
+	yay -Syu lightdm lightdm-gtk-greeter light-locker
 
 install-work-tools:
 	yay -Syu code docker docker-compose elixir http-prompt openfortigui peek
 	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
-
 
 install-fonts:
 	yay -Syu otf-fira-code otf-font-awesome ttf-dejavu ttf-emojione ttf-google-fonts-git ttf-ms-fonts ttf-symbola
@@ -41,12 +55,3 @@ install-audio:
 
 install-media:
 	yay -Syu vlc pavucontrol
-
-install-display-manager:
-	yay -Syu lightdm lightdm-gtk-greeter light-locker
-
-install-oh-my-zsh:
-	sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-	#install a theme
-	git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
-	ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
