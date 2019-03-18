@@ -1,11 +1,15 @@
 install-xorg:
-	pacman -Syu xorg-server xorg-xbacklight xorg-xrandr
+	pacman -S xorg-server xorg-xbacklight xorg-xrandr
 
 install-utils:
-	pacman -Syu neovim htop tar unrar unzip xarchiver
+	pacman -S neovim htop tar unrar unzip xarchiver stow
 
 install-zsh:
-	pacman -Syu zsh zsh-completions
+	pacman -S zsh zsh-completions
+	chsh -s /bin/zsh
+
+install-terminal:
+	pacman -S alacritty
 
 install-oh-my-zsh:
 	sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
@@ -21,7 +25,7 @@ install-yay:
 	rm -rf yay
 
 install-xmonad:
-	yay -Syu stack-static wireless_tools
+	yay -S stack-static wireless_tools
 	stack setup
 	mkdir ~/.xmonad
 	cd ~/.xmonad
@@ -32,26 +36,26 @@ install-xmonad:
 	stack install --flag xmobar:all_extensions
 
 install-display-manager:
-	yay -Syu lightdm lightdm-gtk-greeter light-locker
+	yay -S lightdm lightdm-gtk-greeter light-locker
 
 install-work-tools:
-	yay -Syu code docker docker-compose elixir http-prompt openfortigui peek
+	yay -S code docker docker-compose elixir http-prompt openfortigui peek
 	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
 
 install-fonts:
-	yay -Syu otf-fira-code otf-font-awesome ttf-dejavu ttf-emojione ttf-google-fonts-git ttf-ms-fonts ttf-symbola
+	yay -S otf-fira-code otf-font-awesome ttf-dejavu ttf-emojione ttf-google-fonts-git ttf-ms-fonts ttf-symbola
 
 install-visual:
-	yay -Syu compton dunst dzen2 gsimplecal libnotify maim neofetch rofi stow xclip
+	yay -S compton dunst dzen2 libnotify maim neofetch rofi stow xclip
 
 install-usefull:
-	yay -Syu firefox google-chrome iw pcmanfm powertop reflector subliminal transmission-gtk youtube-dl
+	yay -S firefox google-chrome iw pcmanfm powertop reflector subliminal youtube-dl
 
 install-video:
-	yay -Syu optimus-manager xf86-video-intel
+	yay -S optimus-manager xf86-video-intel
 
 install-audio:
-	yay -Syu alsa-utils pavucontrol pulseaudio pulseaudio-alsa
+	yay -S alsa-utils pavucontrol pulseaudio pulseaudio-alsa
 
 install-media:
-	yay -Syu vlc pavucontrol
+	yay -S vlc pavucontrol
