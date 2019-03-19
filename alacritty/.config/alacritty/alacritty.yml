@@ -86,7 +86,7 @@ font:
     #   - (macOS) Menlo
     #   - (Linux) monospace
     #   - (Windows) Consolas
-    family: Dejavu Sans Mono For Powerline
+    family: Dejavu Sans Mono
 
     # The `style` can be specified to pick a specific face.
     #style: Regular
